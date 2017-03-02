@@ -20,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.youth.banner.listener.OnBannerClickListener;
 import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoaderInterface;
 import com.youth.banner.view.BannerViewPager;
@@ -66,7 +65,6 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
     private BannerPagerAdapter adapter;
     private OnPageChangeListener mOnPageChangeListener;
     private BannerScroller mScroller;
-    private OnBannerClickListener bannerListener;
     private OnBannerListener listener;
     private DisplayMetrics dm;
 
@@ -506,16 +504,6 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         public Object instantiateItem(ViewGroup container, final int position) {
             container.addView(imageViews.get(position));
             View view = imageViews.get(position);
-            if (bannerListener != null) {
-                view.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Log.e(tag, "你正在使用旧版点击事件接口，下标是从1开始，" +
-                                "为了体验请更换为setOnBannerListener，下标从0开始计算");
-                        bannerListener.OnBannerClick(position);
-                    }
-                });
-            }
             if (listener != null) {
                 view.setOnClickListener(new OnClickListener() {
                     @Override
@@ -600,15 +588,8 @@ public class Banner extends FrameLayout implements OnPageChangeListener {
         }
 
     }
-
-    @Deprecated
-    public Banner setOnBannerClickListener(OnBannerClickListener listener) {
-        this.bannerListener = listener;
-        return this;
-    }
-
+    
     /**
-     * 废弃了旧版接口，新版的接口下标是从1开始，同时解决下标越界问题
      *
      * @param listener
      * @return
